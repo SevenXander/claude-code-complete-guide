@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>封面 - 漫画图解 QueryEngine</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1080px; height: 1440px; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidden; position: relative; background: linear-gradient(170deg, #87CEEB 0%, #87CEEB 35%, #E8F5E9 35%, #A5D6A7 100%); }
+
+.sky-clouds { position: absolute; top: 0; width: 100%; height: 500px; }
+.cloud { position: absolute; background: white; border-radius: 50%; }
+.cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
+.cl1 { width: 180px; height: 60px; top: 60px; left: 80px; opacity: 0.9; }
+.cl1::before { width: 90px; height: 50px; top: -25px; left: 30px; }
+.cl1::after { width: 70px; height: 40px; top: -15px; left: 90px; }
+.cl2 { width: 140px; height: 50px; top: 120px; right: 120px; opacity: 0.7; }
+.cl2::before { width: 70px; height: 40px; top: -20px; left: 25px; }
+.cl2::after { width: 50px; height: 30px; top: -10px; left: 75px; }
+.cl3 { width: 200px; height: 55px; top: 30px; right: 300px; opacity: 0.8; }
+.cl3::before { width: 100px; height: 55px; top: -28px; left: 40px; }
+.cl3::after { width: 80px; height: 40px; top: -18px; left: 100px; }
+
+.grass-ground { position: absolute; bottom: 0; width: 100%; height: 380px; background: linear-gradient(180deg, #66BB6A, #43A047); border-radius: 50% 50% 0 0 / 80px 80px 0 0; }
+
+.title-banner {
+  position: absolute; top: 200px; left: 50%; transform: translateX(-50%);
+  background: #FF4757; color: white; padding: 14px 60px;
+  font-size: 34px; font-weight: 900; letter-spacing: 6px;
+  border-radius: 40px; z-index: 20;
+  box-shadow: 0 6px 20px rgba(255,71,87,0.5), inset 0 -3px 0 rgba(0,0,0,0.15);
+  border: 3px solid #D63031;
+}
+
+.main-title-area {
+  position: absolute; top: 280px; width: 100%; text-align: center; z-index: 20;
+}
+.main-title {
+  font-size: 88px; font-weight: 900; color: #2C3E50;
+  text-shadow: 4px 4px 0 #fff, 8px 8px 0 rgba(0,0,0,0.08);
+  line-height: 1.2;
+}
+.main-title .blue { color: #4A90D9; }
+.main-title .red { color: #E74C3C; }
+.sub-title {
+  font-size: 52px; font-weight: 900; color: #7C4DFF; margin-top: 10px;
+  text-shadow: 3px 3px 0 #fff;
+}
+
+.doraemon-container {
+  position: absolute; bottom: 200px; left: 50%; transform: translateX(-50%); z-index: 15;
+}
+
+.doraemon-shadow {
+  position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+  width: 260px; height: 30px; background: rgba(0,0,0,0.15);
+  border-radius: 50%;
+}
+
+.speech-bubble {
+  position: absolute; top: -80px; right: -220px;
+  background: white; border: 3px solid #333; border-radius: 24px;
+  padding: 14px 22px; font-size: 26px; font-weight: bold; color: #333;
+  z-index: 25; white-space: nowrap;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+.speech-bubble::before {
+  content: ''; position: absolute; bottom: -18px; left: 40px;
+  border: 10px solid transparent; border-top: 12px solid #333;
+}
+.speech-bubble::after {
+  content: ''; position: absolute; bottom: -14px; left: 42px;
+  border: 8px solid transparent; border-top: 10px solid white;
+}
+
+.footer-area {
+  position: absolute; bottom: 40px; width: 100%; text-align: center; z-index: 20;
+}
+.footer-files {
+  font-size: 26px; color: rgba(255,255,255,0.95); font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+.footer-badge {
+  display: inline-block; background: rgba(255,255,255,0.9); color: #7C4DFF;
+  padding: 10px 30px; border-radius: 25px; font-size: 24px; font-weight: 900;
+  margin-top: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  border: 2px solid #7C4DFF;
+}
+
+.sparkle { position: absolute; z-index: 25; }
+.sparkle svg { filter: drop-shadow(0 0 3px rgba(255,215,0,0.6)); }
+.sp1 { top: 320px; left: 100px; }
+.sp2 { top: 280px; right: 130px; }
+.sp3 { bottom: 450px; left: 180px; }
+.sp4 { top: 450px; right: 180px; }
+
+.code-float {
+  position: absolute; font-family: 'Courier New', monospace;
+  font-size: 20px; font-weight: bold; z-index: 5;
+  padding: 8px 14px; border-radius: 8px;
+  background: rgba(255,255,255,0.85); border: 2px solid rgba(0,0,0,0.1);
+  color: #555; box-shadow: 2px 2px 8px rgba(0,0,0,0.06);
+}
+.cf1 { top: 560px; left: 30px; transform: rotate(-5deg); }
+.cf2 { top: 620px; right: 30px; transform: rotate(3deg); }
+.cf3 { top: 700px; left: 60px; transform: rotate(-2deg); }
+</style>
+</head>
+<body>
+  <div class="sky-clouds">
+    <div class="cloud cl1"></div>
+    <div class="cloud cl2"></div>
+    <div class="cloud cl3"></div>
+  </div>
+
+  <div class="grass-ground"></div>
+
+  <div class="code-float cf1"><span style="color:#569CD6">async function*</span> <span style="color:#DCDCAA">queryLoop</span>() {</div>
+  <div class="code-float cf2"><span style="color:#569CD6">for await</span> (<span style="color:#569CD6">const</span> msg <span style="color:#569CD6">of</span> stream)</div>
+  <div class="code-float cf3"><span style="color:#569CD6">yield*</span> <span style="color:#DCDCAA">submitMessage</span>(prompt)</div>
+
+  <div class="sparkle sp1"><svg width="36" height="36" viewBox="0 0 36 36"><path d="M18 0 L21 14 L36 18 L21 22 L18 36 L15 22 L0 18 L15 14 Z" fill="#FFD700"/></svg></div>
+  <div class="sparkle sp2"><svg width="28" height="28" viewBox="0 0 36 36"><path d="M18 0 L21 14 L36 18 L21 22 L18 36 L15 22 L0 18 L15 14 Z" fill="#FFD700"/></svg></div>
+  <div class="sparkle sp3"><svg width="22" height="22" viewBox="0 0 36 36"><path d="M18 0 L21 14 L36 18 L21 22 L18 36 L15 22 L0 18 L15 14 Z" fill="#FFD700"/></svg></div>
+  <div class="sparkle sp4"><svg width="30" height="30" viewBox="0 0 36 36"><path d="M18 0 L21 14 L36 18 L21 22 L18 36 L15 22 L0 18 L15 14 Z" fill="#FF6B6B"/></svg></div>
+
+  <div class="title-banner">漫画图解系列</div>
+
+  <div class="main-title-area">
+    <div class="main-title">
+      <span class="blue">Claude Code</span><br>
+      LLM 交互引擎
+    </div>
+    <div class="sub-title">QueryEngine 深度解析</div>
+  </div>
+
+  <div class="doraemon-container">
+    <div class="doraemon-shadow"></div>
+    <div class="speech-bubble">带你揭秘 AI Agent 的大脑!</div>
+    <svg width="320" height="400" viewBox="0 0 320 400">
+      <!-- 身体 -->
+      <ellipse cx="160" cy="310" rx="95" ry="85" fill="#4A90D9" stroke="#2C3E50" stroke-width="3"/>
+      <ellipse cx="160" cy="325" rx="68" ry="62" fill="white" stroke="#2C3E50" stroke-width="2"/>
+      <!-- 口袋 -->
+      <path d="M 115 310 Q 160 380 205 310" fill="white" stroke="#2C3E50" stroke-width="2"/>
+      <line x1="115" y1="310" x2="205" y2="310" stroke="#2C3E50" stroke-width="2"/>
+      <!-- 腿 -->
+      <ellipse cx="125" cy="390" rx="35" ry="16" fill="white" stroke="#2C3E50" stroke-width="2.5"/>
+      <ellipse cx="195" cy="390" rx="35" ry="16" fill="white" stroke="#2C3E50" stroke-width="2.5"/>
+      <!-- 头 -->
+      <circle cx="160" cy="160" r="125" fill="#4A90D9" stroke="#2C3E50" stroke-width="3"/>
+      <!-- 脸 -->
+      <ellipse cx="160" cy="185" rx="98" ry="95" fill="white" stroke="#2C3E50" stroke-width="2"/>
+      <!-- 眼睛 -->
+      <ellipse cx="135" cy="135" rx="26" ry="32" fill="white" stroke="#2C3E50" stroke-width="2.5"/>
+      <ellipse cx="185" cy="135" rx="26" ry="32" fill="white" stroke="#2C3E50" stroke-width="2.5"/>
+      <ellipse cx="148" cy="135" rx="10" ry="13" fill="#2C3E50"/>
+      <ellipse cx="172" cy="135" rx="10" ry="13" fill="#2C3E50"/>
+      <circle cx="152" cy="129" r="4" fill="white"/>
+      <circle cx="176" cy="129" r="4" fill="white"/>
+      <!-- 鼻子 -->
+      <circle cx="160" cy="172" r="16" fill="#FF4757" stroke="#2C3E50" stroke-width="2"/>
+      <ellipse cx="154" cy="167" rx="5" ry="4" fill="rgba(255,255,255,0.45)"/>
+      <!-- 鼻子到嘴的线 -->
+      <line x1="160" y1="188" x2="160" y2="225" stroke="#2C3E50" stroke-width="2"/>
+      <!-- 嘴巴 - 微笑 -->
+      <path d="M 100 215 Q 160 280 220 215" fill="none" stroke="#2C3E50" stroke-width="2.5"/>
+      <!-- 胡须 -->
+      <line x1="40" y1="170" x2="100" y2="185" stroke="#2C3E50" stroke-width="2"/>
+      <line x1="35" y1="195" x2="100" y2="200" stroke="#2C3E50" stroke-width="2"/>
+      <line x1="40" y1="222" x2="100" y2="215" stroke="#2C3E50" stroke-width="2"/>
+      <line x1="220" y1="185" x2="280" y2="170" stroke="#2C3E50" stroke-width="2"/>
+      <line x1="220" y1="200" x2="285" y2="195" stroke="#2C3E50" stroke-width="2"/>
+      <line x1="220" y1="215" x2="280" y2="222" stroke="#2C3E50" stroke-width="2"/>
+      <!-- 项圈 -->
+      <rect x="100" y="245" width="120" height="16" rx="8" fill="#FF4757" stroke="#2C3E50" stroke-width="2"/>
+      <!-- 铃铛 -->
+      <circle cx="160" cy="265" r="14" fill="#FFD93D" stroke="#2C3E50" stroke-width="2"/>
+      <line x1="148" y1="262" x2="172" y2="262" stroke="#2C3E50" stroke-width="1.5"/>
+      <circle cx="160" cy="269" r="2.5" fill="#2C3E50"/>
+      <!-- 左手 - 举起拿卷轴 -->
+      <line x1="75" y1="290" x2="45" y2="250" stroke="#4A90D9" stroke-width="12" stroke-linecap="round"/>
+      <circle cx="40" cy="245" r="20" fill="white" stroke="#2C3E50" stroke-width="2.5"/>
+      <!-- 卷轴 -->
+      <rect x="10" y="210" width="55" height="35" rx="6" fill="#FFF3CD" stroke="#2C3E50" stroke-width="2"/>
+      <text x="37" y="233" text-anchor="middle" font-size="16" fill="#E74C3C" font-weight="bold" font-family="Courier New">&lt;/&gt;</text>
+      <!-- 右手 - 挥手 -->
+      <line x1="245" y1="290" x2="280" y2="255" stroke="#4A90D9" stroke-width="12" stroke-linecap="round"/>
+      <circle cx="285" cy="248" r="20" fill="white" stroke="#2C3E50" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+  <div class="footer-area">
+    <div class="footer-files">src/QueryEngine.ts + src/query.ts</div>
+    <div class="footer-badge">全 8 话 | 竖版漫画 | 适合手机阅读</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>第5话 - 工具执行</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1080px; height: 1440px; background: #FFF8E1; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidden; }
+
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px; background: linear-gradient(90deg, #F39C12, #E67E22);
+}
+.page-num { font-size: 22px; color: rgba(255,255,255,0.8); font-weight: bold; }
+.page-title { font-size: 42px; font-weight: 900; color: white; text-shadow: 2px 2px 0 rgba(0,0,0,0.15); }
+
+.comic-grid { padding: 12px 30px; display: flex; flex-direction: column; gap: 12px; }
+
+.panel {
+  background: white; border-radius: 16px; border: 3px solid #2C3E50;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.12); overflow: hidden;
+}
+.panel-header { padding: 10px 20px; font-size: 22px; font-weight: 900; color: white; letter-spacing: 2px; }
+.panel-body { padding: 16px 20px; }
+
+.hl { color: #E74C3C; font-weight: bold; }
+.bl { color: #4A90D9; font-weight: bold; }
+.gr { color: #27AE60; font-weight: bold; }
+.code { background: #F0F0F0; border: 1px solid #DDD; border-radius: 4px; padding: 2px 8px; font-family: 'Courier New', monospace; font-size: 18px; }
+
+/* 四次元口袋 */
+.pocket-intro { display: flex; align-items: center; gap: 16px; }
+.pocket-text { font-size: 24px; line-height: 1.5; color: #333; flex: 1; }
+
+/* 工具卡片 */
+.tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+.tool-card {
+  border-radius: 14px; padding: 12px 8px; text-align: center; border: 2.5px solid;
+  position: relative;
+}
+.tool-icon { font-size: 34px; display: block; }
+.tool-name { font-size: 20px; font-weight: 900; margin-top: 3px; }
+.tool-badge {
+  position: absolute; top: -8px; right: -4px; padding: 2px 8px; border-radius: 8px;
+  font-size: 13px; font-weight: bold; color: white;
+}
+
+/* 甘特图 */
+.gantt { margin: 8px 0; }
+.gantt-row { display: flex; align-items: center; margin: 6px 0; gap: 6px; }
+.gantt-label { width: 70px; font-size: 17px; font-weight: bold; text-align: right; }
+.gantt-track { flex: 1; height: 30px; background: #F5F5F5; border-radius: 6px; position: relative; border: 1px solid #DDD; overflow: hidden; }
+.gantt-bar {
+  position: absolute; top: 0; height: 100%; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 13px; font-weight: bold;
+}
+.gantt-note { text-align: center; font-size: 17px; color: #888; margin-top: 4px; }
+
+/* 权限流程 */
+.perm-flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; margin: 8px 0; }
+.perm-box {
+  padding: 10px 14px; border-radius: 12px; font-size: 18px; font-weight: bold;
+  border: 2.5px solid; text-align: center;
+}
+.perm-arrow { font-size: 22px; color: #999; }
+
+.strategy-section { margin-top: 10px; }
+.strategy-label {
+  font-size: 20px; font-weight: 900; padding: 5px 14px; border-radius: 10px;
+  display: inline-block; color: white; margin-bottom: 8px;
+}
+</style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="page-title">第5话: 工具执行 Tool Execution</div>
+    <div class="page-num">5/8</div>
+  </div>
+
+  <div class="comic-grid">
+    <!-- Panel 1: 工具百宝箱 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #F39C12, #E67E22);">SCENE 1 - 四次元口袋里的工具</div>
+      <div class="panel-body">
+        <div class="pocket-intro">
+          <svg width="80" height="90" viewBox="0 0 80 90">
+            <ellipse cx="40" cy="50" rx="35" ry="30" fill="#4A90D9" stroke="#2C3E50" stroke-width="2.5"/>
+            <ellipse cx="40" cy="55" rx="25" ry="22" fill="white" stroke="#2C3E50" stroke-width="1.5"/>
+            <path d="M 22 48 Q 40 78 58 48" fill="white" stroke="#2C3E50" stroke-width="1.5"/>
+            <line x1="22" y1="48" x2="58" y2="48" stroke="#2C3E50" stroke-width="1.5"/>
+            <text x="40" y="42" text-anchor="middle" font-size="22">🔧</text>
+            <circle cx="40" cy="22" r="18" fill="#4A90D9" stroke="#2C3E50" stroke-width="2"/>
+            <ellipse cx="40" cy="26" rx="13" ry="12" fill="white"/>
+            <circle cx="35" cy="20" r="3" fill="#2C3E50"/><circle cx="45" cy="20" r="3" fill="#2C3E50"/>
+            <circle cx="40" cy="26" r="2.5" fill="#FF4757"/>
+            <path d="M 33 32 Q 40 38 47 32" fill="none" stroke="#2C3E50" stroke-width="1.2"/>
+          </svg>
+          <div class="pocket-text">
+            蓝胖子的四次元口袋装着各种工具！<br>
+            分为 <span class="gr">安全读取</span> 和 <span class="hl">危险写入</span> 两类。
+          </div>
+        </div>
+        <div class="tool-grid">
+          <div class="tool-card" style="background: #E8F4FD; border-color: #4A90D9;">
+            <div class="tool-badge" style="background: #27AE60;">可并发</div>
+            <span class="tool-icon">📖</span>
+            <span class="tool-name" style="color: #4A90D9;">Read</span>
+          </div>
+          <div class="tool-card" style="background: #E8F4FD; border-color: #4A90D9;">
+            <div class="tool-badge" style="background: #27AE60;">可并发</div>
+            <span class="tool-icon">🔍</span>
+            <span class="tool-name" style="color: #4A90D9;">Grep</span>
+          </div>
+          <div class="tool-card" style="background: #E8F4FD; border-color: #4A90D9;">
+            <div class="tool-badge" style="background: #27AE60;">可并发</div>
+            <span class="tool-icon">📂</span>
+            <span class="tool-name" style="color: #4A90D9;">Glob</span>
+          </div>
+          <div class="tool-card" style="background: #FFF0F0; border-color: #E74C3C;">
+            <div class="tool-badge" style="background: #E74C3C;">需串行</div>
+            <span class="tool-icon">✏️</span>
+            <span class="tool-name" style="color: #E74C3C;">Edit</span>
+          </div>
+          <div class="tool-card" style="background: #FFF0F0; border-color: #E74C3C;">
+            <div class="tool-badge" style="background: #E74C3C;">需串行</div>
+            <span class="tool-icon">💻</span>
+            <span class="tool-name" style="color: #E74C3C;">Bash</span>
+          </div>
+          <div class="tool-card" style="background: #FFF0F0; border-color: #E74C3C;">
+            <div class="tool-badge" style="background: #E74C3C;">需串行</div>
+            <span class="tool-icon">📝</span>
+            <span class="tool-name" style="color: #E74C3C;">Write</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 2: 串行 vs 并发 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #27AE60, #229954);">SCENE 2 - 串行 vs 并发执行</div>
+      <div class="panel-body" style="padding: 14px 18px;">
+        <div class="strategy-section">
+          <div class="strategy-label" style="background: #E74C3C;">🔒 写操作 → 串行（防冲突）</div>
+          <div class="gantt">
+            <div class="gantt-row">
+              <span class="gantt-label" style="color: #E74C3C;">Edit A</span>
+              <div class="gantt-track"><div class="gantt-bar" style="left:0;width:30%;background:linear-gradient(90deg,#E74C3C,#FF6B6B);">执行</div></div>
+            </div>
+            <div class="gantt-row">
+              <span class="gantt-label" style="color: #E67E22;">Bash</span>
+              <div class="gantt-track"><div class="gantt-bar" style="left:32%;width:35%;background:linear-gradient(90deg,#E67E22,#F39C12);">等→执行</div></div>
+            </div>
+            <div class="gantt-row">
+              <span class="gantt-label" style="color: #C0392B;">Edit B</span>
+              <div class="gantt-track"><div class="gantt-bar" style="left:69%;width:30%;background:linear-gradient(90deg,#C0392B,#E74C3C);">等→执行</div></div>
+            </div>
+          </div>
+          <div class="gantt-note">一个接一个，确保文件安全</div>
+        </div>
+
+        <div class="strategy-section">
+          <div class="strategy-label" style="background: #27AE60;">⚡ 读操作 → 并发（最多10个）</div>
+          <div class="gantt">
+            <div class="gantt-row">
+              <span class="gantt-label" style="color: #27AE60;">Read A</span>
+              <div class="gantt-track"><div class="gantt-bar" style="left:0;width:45%;background:linear-gradient(90deg,#27AE60,#2ECC71);">执行</div></div>
+            </div>
+            <div class="gantt-row">
+              <span class="gantt-label" style="color: #2ECC71;">Grep B</span>
+              <div class="gantt-track"><div class="gantt-bar" style="left:0;width:35%;background:linear-gradient(90deg,#2ECC71,#58D68D);">执行</div></div>
+            </div>
+            <div class="gantt-row">
+              <span class="gantt-label" style="color: #1ABC9C;">Glob C</span>
+              <div class="gantt-track"><div class="gantt-bar" style="left:0;width:25%;background:linear-gradient(90deg,#1ABC9C,#48C9B0);">执行</div></div>
+            </div>
+          </div>
+          <div class="gantt-note">同时执行，速度飞快！🚀</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 3: 权限控制 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #9B59B6, #8E44AD);">SCENE 3 - 权限安全守护</div>
+      <div class="panel-body">
+        <div class="perm-flow">
+          <div class="perm-box" style="background: #E8F4FD; border-color: #4A90D9;">
+            🤖 LLM 请求<br>
+            <span style="font-size: 16px; color: #666;">tool_use: Edit("app.ts")</span>
+          </div>
+          <div class="perm-arrow">→</div>
+          <div class="perm-box" style="background: #F3E5F5; border-color: #9B59B6;">
+            🛡️ canUseTool()<br>
+            <span style="font-size: 16px; color: #666;">权限检查</span>
+          </div>
+          <div class="perm-arrow">→</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div class="perm-box" style="background: #E8F8F0; border-color: #27AE60; font-size: 16px;">
+              ✅ 允许 → 执行工具
+            </div>
+            <div class="perm-box" style="background: #FFF0F0; border-color: #E74C3C; font-size: 16px;">
+              ❌ 拒绝 → 记录 & 跳过
+            </div>
+          </div>
+        </div>
+        <div style="background: #FFF3CD; border: 2px solid #F39C12; border-radius: 12px; padding: 12px 16px; margin-top: 8px; display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 28px;">🔐</span>
+          <span style="font-size: 20px; color: #856404;">
+            <strong>QueryEngine</strong> 会用 <span class="code">wrappedCanUseTool</span> 包装权限检查，<br>
+            每次拒绝都记录到 <span class="code">permissionDenials</span> 数组中！
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding: 12px; font-size: 22px; color: #999; font-weight: bold;">
+    下一话: 重试与错误处理 ▶
+  </div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>第3话 - Agent Loop 循环</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1080px; height: 1440px; background: #FFF5F5; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidden; }
+
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px; background: linear-gradient(90deg, #E74C3C, #FF6B6B);
+}
+.page-num { font-size: 22px; color: rgba(255,255,255,0.8); font-weight: bold; }
+.page-title { font-size: 42px; font-weight: 900; color: white; text-shadow: 2px 2px 0 rgba(0,0,0,0.15); }
+
+.comic-grid { padding: 15px 30px; display: flex; flex-direction: column; gap: 14px; }
+
+.panel {
+  background: white; border-radius: 16px; border: 3px solid #2C3E50;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.12); overflow: hidden;
+}
+.panel-header { padding: 10px 20px; font-size: 22px; font-weight: 900; color: white; letter-spacing: 2px; }
+.panel-body { padding: 18px 22px; }
+
+.hl { color: #E74C3C; font-weight: bold; }
+.bl { color: #4A90D9; font-weight: bold; }
+.gr { color: #27AE60; font-weight: bold; }
+.code { background: #F0F0F0; border: 1px solid #DDD; border-radius: 4px; padding: 2px 8px; font-family: 'Courier New', monospace; font-size: 19px; }
+
+.intro-text { font-size: 24px; line-height: 1.6; color: #333; padding: 8px 14px; border-left: 4px solid #E74C3C; background: #FFF0F0; border-radius: 0 12px 12px 0; }
+
+/* 循环流程 */
+.loop-visual { position: relative; padding: 10px 0; }
+.loop-steps { display: flex; flex-direction: column; gap: 0; align-items: center; }
+.step-row { display: flex; align-items: center; gap: 14px; width: 100%; }
+.step-num {
+  width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 900; color: white; flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+.step-content {
+  flex: 1; padding: 12px 16px; border-radius: 14px; border: 2.5px solid;
+  font-size: 22px; font-weight: bold; line-height: 1.4;
+}
+.step-content small { font-size: 17px; font-weight: normal; color: #666; display: block; margin-top: 2px; }
+.step-arrow { text-align: center; padding: 2px 0; font-size: 24px; color: #CCC; margin-left: 22px; }
+
+.loop-back {
+  position: relative; margin: 8px auto; width: 85%; height: 45px;
+  border: 3px dashed #E74C3C; border-top: none; border-radius: 0 0 20px 20px;
+}
+.loop-back-label {
+  position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%);
+  background: #E74C3C; color: white; padding: 4px 16px; border-radius: 10px;
+  font-size: 18px; font-weight: bold; white-space: nowrap;
+}
+.loop-back-arrow {
+  position: absolute; top: -8px; left: 0;
+  border: 8px solid transparent; border-bottom: 10px solid #E74C3C;
+}
+
+/* 代码块 */
+.code-block {
+  background: #1a1a2e; color: #E0E0E0; border-radius: 14px; padding: 16px 18px;
+  font-family: 'Courier New', monospace; font-size: 18px; line-height: 1.7;
+  border: 2px solid #333; position: relative; overflow: hidden;
+}
+.code-block::before {
+  content: 'query.ts'; position: absolute; top: 0; right: 0;
+  background: #E74C3C; color: white; padding: 3px 12px; border-radius: 0 12px 0 8px;
+  font-size: 14px; font-weight: bold;
+}
+.kw { color: #569CD6; } .fn { color: #DCDCAA; } .str { color: #CE9178; }
+.cm { color: #6A9955; } .vr { color: #9CDCFE; }
+</style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="page-title">第3话: Agent Loop 核心循环</div>
+    <div class="page-num">3/8</div>
+  </div>
+
+  <div class="comic-grid">
+    <!-- Panel 1: 概念 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #E74C3C, #C0392B);">SCENE 1 - 什么是 Agent Loop？</div>
+      <div class="panel-body">
+        <div class="intro-text">
+          Agent Loop 是 AI Agent 的 <span class="hl">心跳</span>！<br>
+          它让 LLM 不只是"回答问题"，而是能 <span class="bl">调用工具、执行操作、再思考</span>，<br>
+          像一个真正的 <span class="gr">智能助手</span> 一样持续工作。
+        </div>
+        <div style="text-align: right; margin-top: 8px; font-size: 18px; color: #999;">
+          位置: <span class="code">query.ts:241</span> queryLoop() 函数
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 2: 循环流程 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #9B59B6, #8E44AD);">SCENE 2 - 循环流程图</div>
+      <div class="panel-body">
+        <div class="loop-visual">
+          <div class="loop-steps">
+            <div class="step-row">
+              <div class="step-num" style="background: linear-gradient(135deg, #4A90D9, #3498DB);">1</div>
+              <div class="step-content" style="background: #E8F4FD; border-color: #4A90D9;">
+                ☁️ <span class="bl">调用 LLM API</span>
+                <small>发送消息 + 工具列表给 Claude API（流式）</small>
+              </div>
+            </div>
+            <div class="step-arrow">▼</div>
+            <div class="step-row">
+              <div class="step-num" style="background: linear-gradient(135deg, #E74C3C, #C0392B);">2</div>
+              <div class="step-content" style="background: #FFF0F0; border-color: #E74C3C;">
+                🔍 <span class="hl">解析响应</span>
+                <small>检测 tool_use blocks → 需要继续？</small>
+              </div>
+            </div>
+            <div class="step-arrow">▼</div>
+            <div class="step-row">
+              <div class="step-num" style="background: linear-gradient(135deg, #27AE60, #229954);">3</div>
+              <div class="step-content" style="background: #E8F8F0; border-color: #27AE60;">
+                🔧 <span class="gr">执行工具</span>
+                <small>Read / Edit / Bash / Grep / 搜索...</small>
+              </div>
+            </div>
+            <div class="step-arrow">▼</div>
+            <div class="step-row">
+              <div class="step-num" style="background: linear-gradient(135deg, #F39C12, #E67E22);">4</div>
+              <div class="step-content" style="background: #FFF8E1; border-color: #F39C12;">
+                📦 <span style="color: #F39C12; font-weight: bold;">收集结果</span>
+                <small>tool_result 添加到消息列表</small>
+              </div>
+            </div>
+            <div class="step-arrow">▼</div>
+            <div class="step-row">
+              <div class="step-num" style="background: linear-gradient(135deg, #9B59B6, #8E44AD);">5</div>
+              <div class="step-content" style="background: #F3E5F5; border-color: #9B59B6;">
+                🔄 <span style="color: #9B59B6; font-weight: bold;">判断是否继续</span>
+                <small>有 tool_use？→ 回到步骤1 | 无 → 结束!</small>
+              </div>
+            </div>
+          </div>
+          <div class="loop-back">
+            <div class="loop-back-arrow"></div>
+            <div class="loop-back-label">有工具调用 → 继续循环 🔁</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 3: 关键代码 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #2C3E50, #34495E);">SCENE 3 - 核心代码简化版</div>
+      <div class="panel-body" style="padding: 14px 18px;">
+        <div class="code-block">
+<span class="cm">// queryLoop 核心伪代码</span>
+<span class="kw">async function*</span> <span class="fn">queryLoop</span>() {
+  <span class="kw">while</span> (<span class="vr">true</span>) {
+    <span class="cm">// 1. 流式调用 LLM API</span>
+    <span class="kw">for await</span> (<span class="kw">const</span> <span class="vr">msg</span> <span class="kw">of</span> <span class="fn">callModel</span>({...}))
+      <span class="kw">yield</span> <span class="vr">msg</span>  <span class="cm">// 实时返回给用户</span>
+
+    <span class="cm">// 2. 检测 tool_use blocks</span>
+    <span class="kw">if</span> (<span class="vr">toolUseBlocks</span>.length > <span style="color:#B5CEA8">0</span>)
+      <span class="vr">needsFollowUp</span> = <span class="vr">true</span>
+
+    <span class="cm">// 3. 执行工具 & 收集结果</span>
+    <span class="kw">for await</span> (<span class="kw">const</span> <span class="vr">r</span> <span class="kw">of</span> <span class="fn">runTools</span>(...))
+      <span class="kw">yield</span> <span class="vr">r</span>
+
+    <span class="cm">// 4. 决定是否继续</span>
+    <span class="kw">if</span> (!<span class="vr">needsFollowUp</span>) <span class="kw">break</span>
+    <span class="cm">// 否则 → 带着工具结果继续循环!</span>
+  }
+}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding: 12px; font-size: 22px; color: #999; font-weight: bold;">
+    下一话: 流式响应详解 ▶
+  </div>
+</body>
+</html>

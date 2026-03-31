@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>第4话 - 流式响应处理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1080px; height: 1440px; background: #F0FFF4; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidden; }
+
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px; background: linear-gradient(90deg, #27AE60, #2ECC71);
+}
+.page-num { font-size: 22px; color: rgba(255,255,255,0.8); font-weight: bold; }
+.page-title { font-size: 42px; font-weight: 900; color: white; text-shadow: 2px 2px 0 rgba(0,0,0,0.15); }
+
+.comic-grid { padding: 12px 30px; display: flex; flex-direction: column; gap: 12px; }
+
+.panel {
+  background: white; border-radius: 16px; border: 3px solid #2C3E50;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.12); overflow: hidden;
+}
+.panel-header { padding: 10px 20px; font-size: 22px; font-weight: 900; color: white; letter-spacing: 2px; }
+.panel-body { padding: 16px 20px; }
+
+.hl { color: #E74C3C; font-weight: bold; }
+.bl { color: #4A90D9; font-weight: bold; }
+.gr { color: #27AE60; font-weight: bold; }
+.code { background: #F0F0F0; border: 1px solid #DDD; border-radius: 4px; padding: 2px 8px; font-family: 'Courier New', monospace; font-size: 18px; }
+
+.dialog { display: flex; align-items: flex-start; gap: 12px; margin: 8px 0; }
+.dialog-r { flex-direction: row-reverse; }
+.bubble {
+  position: relative; border-radius: 18px; padding: 12px 16px; font-size: 23px; line-height: 1.5;
+  border: 2.5px solid #333; flex: 1;
+}
+
+/* 流式数据动画 */
+.stream-visual {
+  background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 14px;
+  padding: 16px 18px; border: 2px solid #333;
+}
+.stream-title { color: #4A90D9; font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+.stream-row { display: flex; align-items: center; gap: 8px; margin: 7px 0; }
+.stream-label { color: #888; font-size: 15px; min-width: 70px; font-family: 'Courier New', monospace; }
+.stream-arrow { color: #555; font-size: 16px; }
+.stream-chunk {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+  border-radius: 8px; font-size: 17px; font-weight: bold; color: white;
+  font-family: 'Courier New', monospace;
+}
+.chunk-think { background: linear-gradient(135deg, #9B59B6, #8E44AD); }
+.chunk-text { background: linear-gradient(135deg, #4A90D9, #3498DB); }
+.chunk-tool { background: linear-gradient(135deg, #E74C3C, #C0392B); }
+.stream-note { color: #FFD93D; font-size: 16px; text-align: center; margin-top: 10px; }
+
+/* 对比 */
+.compare { display: flex; gap: 12px; }
+.compare-side { flex: 1; border-radius: 14px; border: 3px solid; padding: 14px; }
+.compare-title { font-size: 22px; font-weight: 900; text-align: center; padding-bottom: 8px; margin-bottom: 10px; }
+.timeline-bar { display: flex; align-items: center; margin: 8px 0; gap: 6px; }
+.bar-label { font-size: 16px; font-weight: bold; min-width: 60px; text-align: right; }
+.bar-track { flex: 1; height: 28px; background: #F5F5F5; border-radius: 6px; position: relative; overflow: hidden; border: 1px solid #DDD; }
+.bar-fill { position: absolute; top: 0; height: 100%; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: bold; }
+.time-total { text-align: center; font-size: 20px; font-weight: 900; margin-top: 6px; }
+
+/* 代码块 */
+.code-block {
+  background: #1a1a2e; color: #E0E0E0; border-radius: 14px; padding: 14px 16px;
+  font-family: 'Courier New', monospace; font-size: 17px; line-height: 1.6;
+  border: 2px solid #333; position: relative;
+}
+.code-block::before {
+  content: 'query.ts'; position: absolute; top: 0; right: 0;
+  background: #27AE60; color: white; padding: 3px 12px; border-radius: 0 12px 0 8px;
+  font-size: 14px; font-weight: bold;
+}
+.kw { color: #569CD6; } .fn { color: #DCDCAA; } .cm { color: #6A9955; } .vr { color: #9CDCFE; } .str { color: #CE9178; }
+</style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="page-title">第4话: 流式响应 Streaming</div>
+    <div class="page-num">4/8</div>
+  </div>
+
+  <div class="comic-grid">
+    <!-- Panel 1: 对话解释 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #27AE60, #229954);">SCENE 1 - 为什么要"流式"？</div>
+      <div class="panel-body">
+        <div class="dialog">
+          <svg width="60" height="65" viewBox="0 0 60 70">
+            <circle cx="30" cy="22" r="18" fill="#FFE4B5" stroke="#2C3E50" stroke-width="2"/>
+            <circle cx="24" cy="19" r="3" fill="#2C3E50"/><circle cx="36" cy="19" r="3" fill="#2C3E50"/>
+            <path d="M 24 28 Q 30 33 36 28" fill="none" stroke="#2C3E50" stroke-width="1.5"/>
+            <path d="M 14 8 Q 30 -4 46 8 Q 50 4 48 10" fill="#333" stroke="#2C3E50" stroke-width="1"/>
+            <rect x="18" y="38" width="24" height="20" rx="4" fill="#FF6B6B" stroke="#2C3E50" stroke-width="1.5"/>
+          </svg>
+          <div class="bubble" style="background: #FFF8E1; border-color: #F39C12;">
+            为什么不等 LLM 全部说完再显示？
+          </div>
+        </div>
+        <div class="dialog dialog-r">
+          <svg width="60" height="65" viewBox="0 0 80 80">
+            <circle cx="40" cy="28" r="24" fill="#4A90D9" stroke="#2C3E50" stroke-width="2"/>
+            <ellipse cx="40" cy="33" rx="18" ry="16" fill="white"/>
+            <circle cx="34" cy="25" r="3.5" fill="#2C3E50"/><circle cx="46" cy="25" r="3.5" fill="#2C3E50"/>
+            <circle cx="40" cy="33" r="3.5" fill="#FF4757" stroke="#2C3E50" stroke-width="1"/>
+            <path d="M 30 40 Q 40 50 50 40" fill="none" stroke="#2C3E50" stroke-width="1.5"/>
+          </svg>
+          <div class="bubble" style="background: #E8F8F0; border-color: #27AE60;">
+            想象你在餐厅点菜：<br>
+            ❌ 等所有菜做完一起上 = <span class="hl">干等10分钟</span><br>
+            ✅ 做好一道上一道 = <span class="gr">马上能吃！</span><br>
+            流式 = <span class="bl">边生成边显示</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 2: 数据流 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #4A90D9, #3498DB);">SCENE 2 - 数据流长什么样？</div>
+      <div class="panel-body" style="padding: 12px 16px;">
+        <div class="stream-visual">
+          <div class="stream-title">Claude API → QueryEngine 的数据流:</div>
+          <div class="stream-row">
+            <span class="stream-label">chunk 1</span>
+            <span class="stream-arrow">→</span>
+            <span class="stream-chunk chunk-think">🧠 thinking: "让我分析一下..."</span>
+          </div>
+          <div class="stream-row">
+            <span class="stream-label">chunk 2</span>
+            <span class="stream-arrow">→</span>
+            <span class="stream-chunk chunk-text">📝 text: "我来帮你修改..."</span>
+          </div>
+          <div class="stream-row">
+            <span class="stream-label">chunk 3</span>
+            <span class="stream-arrow">→</span>
+            <span class="stream-chunk chunk-text">📝 text: "这个文件的代码"</span>
+          </div>
+          <div class="stream-row">
+            <span class="stream-label">chunk 4</span>
+            <span class="stream-arrow">→</span>
+            <span class="stream-chunk chunk-tool">🔧 tool_use: Edit("app.ts", ...)</span>
+          </div>
+          <div class="stream-note">每个 chunk 到达后立即 yield 给调用者显示！不等待！</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 3: 对比 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #9B59B6, #8E44AD);">SCENE 3 - 普通模式 vs 流式执行</div>
+      <div class="panel-body" style="padding: 14px 18px;">
+        <div class="compare">
+          <div class="compare-side" style="background: #FFF0F0; border-color: #E74C3C;">
+            <div class="compare-title" style="color: #E74C3C; border-bottom: 2px dashed #E74C3C;">❌ 普通模式</div>
+            <div class="timeline-bar">
+              <span class="bar-label" style="color: #E74C3C;">等待</span>
+              <div class="bar-track"><div class="bar-fill" style="left:0;width:60%;background:#E74C3C;">等流式完成</div></div>
+            </div>
+            <div class="timeline-bar">
+              <span class="bar-label" style="color: #C0392B;">执行</span>
+              <div class="bar-track"><div class="bar-fill" style="left:62%;width:38%;background:#C0392B;">执行工具</div></div>
+            </div>
+            <div class="time-total" style="color: #E74C3C;">总计 5s</div>
+          </div>
+          <div class="compare-side" style="background: #E8F8F0; border-color: #27AE60;">
+            <div class="compare-title" style="color: #27AE60; border-bottom: 2px dashed #27AE60;">✅ 流式执行</div>
+            <div class="timeline-bar">
+              <span class="bar-label" style="color: #27AE60;">检测</span>
+              <div class="bar-track"><div class="bar-fill" style="left:0;width:25%;background:#27AE60;">检测</div></div>
+            </div>
+            <div class="timeline-bar">
+              <span class="bar-label" style="color: #2ECC71;">并行</span>
+              <div class="bar-track"><div class="bar-fill" style="left:20%;width:50%;background:#2ECC71;">边流式边执行</div></div>
+            </div>
+            <div class="time-total" style="color: #27AE60;">总计 3s 🚀</div>
+          </div>
+        </div>
+        <div style="text-align: center; font-size: 20px; color: #666; margin-top: 8px;">
+          <span class="code">StreamingToolExecutor</span> 让工具 <span class="hl">边流式边执行</span>！
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 4: 代码 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #2C3E50, #34495E);">SCENE 4 - 关键代码</div>
+      <div class="panel-body" style="padding: 12px 16px;">
+        <div class="code-block">
+<span class="cm">// 流式接收 + 并行执行</span>
+<span class="kw">for await</span> (<span class="kw">const</span> <span class="vr">message</span> <span class="kw">of</span> <span class="fn">callModel</span>({
+  <span class="vr">messages</span>, <span class="vr">systemPrompt</span>, <span class="vr">tools</span>
+})) {
+  <span class="cm">// 检测到工具调用 → 立即提交执行</span>
+  <span class="kw">if</span> (<span class="vr">msg</span>.type === <span class="str">'tool_use'</span>)
+    <span class="vr">streamingExecutor</span>.<span class="fn">submit</span>(<span class="vr">msg</span>)
+  <span class="kw">yield</span> <span class="vr">message</span>  <span class="cm">// 立即返回!</span>
+}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding: 10px; font-size: 22px; color: #999; font-weight: bold;">
+    下一话: 工具执行详解 ▶
+  </div>
+</body>
+</html>

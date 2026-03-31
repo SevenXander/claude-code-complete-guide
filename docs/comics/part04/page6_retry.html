@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>第6话 - 重试与错误处理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1080px; height: 1440px; background: #FFF0F0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidden; }
+
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px; background: linear-gradient(90deg, #E74C3C, #C0392B);
+}
+.page-num { font-size: 22px; color: rgba(255,255,255,0.8); font-weight: bold; }
+.page-title { font-size: 42px; font-weight: 900; color: white; text-shadow: 2px 2px 0 rgba(0,0,0,0.15); }
+
+.comic-grid { padding: 12px 30px; display: flex; flex-direction: column; gap: 12px; }
+
+.panel {
+  background: white; border-radius: 16px; border: 3px solid #2C3E50;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.12); overflow: hidden;
+}
+.panel-header { padding: 10px 20px; font-size: 22px; font-weight: 900; color: white; letter-spacing: 2px; }
+.panel-body { padding: 16px 20px; }
+
+.hl { color: #E74C3C; font-weight: bold; }
+.bl { color: #4A90D9; font-weight: bold; }
+.gr { color: #27AE60; font-weight: bold; }
+.code { background: #F0F0F0; border: 1px solid #DDD; border-radius: 4px; padding: 2px 8px; font-family: 'Courier New', monospace; font-size: 18px; }
+
+.dialog { display: flex; align-items: flex-start; gap: 12px; margin: 6px 0; }
+.bubble { border-radius: 18px; padding: 12px 16px; font-size: 22px; line-height: 1.5; border: 2.5px solid #333; flex: 1; }
+
+/* 错误卡片 */
+.error-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.error-card {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+  border-radius: 14px; border: 2.5px solid;
+}
+.error-emoji { font-size: 32px; flex-shrink: 0; }
+.error-info { flex: 1; }
+.error-code { font-size: 20px; font-weight: 900; }
+.error-desc { font-size: 17px; color: #666; }
+.error-action { font-size: 16px; font-weight: bold; margin-top: 2px; }
+
+/* 柱状图 */
+.bar-chart {
+  display: flex; align-items: flex-end; justify-content: space-around;
+  height: 170px; padding: 0 10px; margin-top: 8px;
+}
+.bar-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar {
+  width: 60px; border-radius: 10px 10px 4px 4px; display: flex; align-items: flex-start;
+  justify-content: center; padding-top: 6px; color: white; font-size: 14px; font-weight: 900;
+}
+.bar-label { font-size: 16px; font-weight: bold; color: #666; }
+
+/* 恢复策略 */
+.recovery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.recovery-card {
+  border-radius: 14px; padding: 14px; border: 2.5px solid;
+}
+.recovery-icon { font-size: 28px; }
+.recovery-title { font-size: 19px; font-weight: 900; margin: 4px 0; }
+.recovery-desc { font-size: 16px; color: #555; line-height: 1.4; }
+</style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="page-title">第6话: 重试与错误处理</div>
+    <div class="page-num">6/8</div>
+  </div>
+
+  <div class="comic-grid">
+    <!-- Panel 1: 开场 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #E74C3C, #FF6B6B);">SCENE 1 - 打不倒的蓝胖子</div>
+      <div class="panel-body">
+        <div class="dialog">
+          <svg width="65" height="75" viewBox="0 0 80 80">
+            <circle cx="40" cy="28" r="24" fill="#4A90D9" stroke="#2C3E50" stroke-width="2"/>
+            <ellipse cx="40" cy="33" rx="18" ry="16" fill="white"/>
+            <circle cx="34" cy="25" r="3.5" fill="#2C3E50"/><circle cx="46" cy="25" r="3.5" fill="#2C3E50"/>
+            <circle cx="36" cy="23" r="1.3" fill="white"/><circle cx="48" cy="23" r="1.3" fill="white"/>
+            <circle cx="40" cy="33" r="3.5" fill="#FF4757" stroke="#2C3E50" stroke-width="1"/>
+            <path d="M 30 40 Q 40 50 50 40" fill="none" stroke="#2C3E50" stroke-width="1.5"/>
+            <line x1="15" y1="30" x2="28" y2="33" stroke="#2C3E50" stroke-width="1.5"/>
+            <line x1="14" y1="37" x2="28" y2="37" stroke="#2C3E50" stroke-width="1.5"/>
+            <line x1="52" y1="33" x2="65" y2="30" stroke="#2C3E50" stroke-width="1.5"/>
+            <line x1="52" y1="37" x2="66" y2="37" stroke="#2C3E50" stroke-width="1.5"/>
+            <rect x="26" y="52" width="28" height="4" rx="2" fill="#FF4757"/>
+            <circle cx="40" cy="58" r="3" fill="#FFD93D" stroke="#2C3E50" stroke-width="1"/>
+            <ellipse cx="40" cy="70" rx="18" ry="12" fill="#4A90D9" stroke="#2C3E50" stroke-width="2"/>
+          </svg>
+          <div class="bubble" style="background: #E8F4FD; border-color: #4A90D9;">
+            API 调用就像发快递，有时会出问题。<br>
+            但别担心！我有 <span class="hl">自动重试超能力</span>！<br>
+            最多重试 <span class="hl">10 次</span>，用 <span class="bl">指数退避</span> 策略！
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 2: 错误类型 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #E67E22, #F39C12);">SCENE 2 - 常见敌人（错误类型）</div>
+      <div class="panel-body" style="padding: 12px 18px;">
+        <div class="error-list">
+          <div class="error-card" style="background: #FFF0F0; border-color: #E74C3C;">
+            <div class="error-emoji">🚦</div>
+            <div class="error-info">
+              <div class="error-code" style="color: #E74C3C;">429 - 速率限制</div>
+              <div class="error-desc">请求太快了！服务器说：慢点来</div>
+              <div class="error-action" style="color: #4A90D9;">→ 等一会儿再试</div>
+            </div>
+          </div>
+          <div class="error-card" style="background: #FFF8E1; border-color: #F39C12;">
+            <div class="error-emoji">🔥</div>
+            <div class="error-info">
+              <div class="error-code" style="color: #F39C12;">529 - 服务器过载</div>
+              <div class="error-desc">服务器忙不过来！最多重试 3 次</div>
+              <div class="error-action" style="color: #4A90D9;">→ 只在前台任务重试</div>
+            </div>
+          </div>
+          <div class="error-card" style="background: #E8F4FD; border-color: #4A90D9;">
+            <div class="error-emoji">🔌</div>
+            <div class="error-info">
+              <div class="error-code" style="color: #4A90D9;">ECONNRESET / EPIPE</div>
+              <div class="error-desc">网络断了！像电话线被剪断</div>
+              <div class="error-action" style="color: #4A90D9;">→ 重建连接并重试</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 3: 指数退避 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #9B59B6, #8E44AD);">SCENE 3 - 指数退避策略</div>
+      <div class="panel-body" style="padding: 12px 18px;">
+        <div style="text-align: center; font-size: 20px; color: #333;">
+          每次重试等待时间 <span class="hl">翻倍</span> + 随机抖动（Jitter）
+        </div>
+        <div class="bar-chart">
+          <div class="bar-col">
+            <div class="bar" style="height:20px;background:linear-gradient(180deg,#4A90D9,#3498DB);">0.5s</div>
+            <span class="bar-label">第1次</span>
+          </div>
+          <div class="bar-col">
+            <div class="bar" style="height:35px;background:linear-gradient(180deg,#3498DB,#2980B9);">1s</div>
+            <span class="bar-label">第2次</span>
+          </div>
+          <div class="bar-col">
+            <div class="bar" style="height:55px;background:linear-gradient(180deg,#2980B9,#21618C);">2s</div>
+            <span class="bar-label">第3次</span>
+          </div>
+          <div class="bar-col">
+            <div class="bar" style="height:80px;background:linear-gradient(180deg,#E74C3C,#C0392B);">4s</div>
+            <span class="bar-label">第4次</span>
+          </div>
+          <div class="bar-col">
+            <div class="bar" style="height:105px;background:linear-gradient(180deg,#C0392B,#A93226);">8s</div>
+            <span class="bar-label">第5次</span>
+          </div>
+          <div class="bar-col">
+            <div class="bar" style="height:135px;background:linear-gradient(180deg,#A93226,#922B21);">16s</div>
+            <span class="bar-label">第6次</span>
+          </div>
+          <div class="bar-col">
+            <div class="bar" style="height:165px;background:linear-gradient(180deg,#922B21,#7B241C);">32s</div>
+            <span class="bar-label">第7次</span>
+          </div>
+        </div>
+        <div style="text-align: center; font-size: 17px; color: #999; margin-top: 6px;">
+          公式: 500ms × 2^(重试次数) + 随机抖动
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 4: 高级恢复 -->
+    <div class="panel">
+      <div class="panel-header" style="background: linear-gradient(90deg, #27AE60, #229954);">SCENE 4 - 高级恢复策略</div>
+      <div class="panel-body" style="padding: 12px 18px;">
+        <div class="recovery-grid">
+          <div class="recovery-card" style="background: #FFF0F0; border-color: #E74C3C;">
+            <span class="recovery-icon">📏</span>
+            <div class="recovery-title" style="color: #E74C3C;">Prompt 太长</div>
+            <div class="recovery-desc">触发 Reactive Compact → 压缩历史消息后重试</div>
+          </div>
+          <div class="recovery-card" style="background: #E8F8F0; border-color: #27AE60;">
+            <span class="recovery-icon">📤</span>
+            <div class="recovery-title" style="color: #27AE60;">输出超限</div>
+            <div class="recovery-desc">从 8K 升到 64K tokens → 最多恢复 3 次</div>
+          </div>
+          <div class="recovery-card" style="background: #E8F4FD; border-color: #4A90D9;">
+            <span class="recovery-icon">🔄</span>
+            <div class="recovery-title" style="color: #4A90D9;">流式回退</div>
+            <div class="recovery-desc">流式中断 → 清除结果 → 新执行器重试</div>
+          </div>
+          <div class="recovery-card" style="background: #F3E5F5; border-color: #9B59B6;">
+            <span class="recovery-icon">📦</span>
+            <div class="recovery-title" style="color: #9B59B6;">上下文压缩</div>
+            <div class="recovery-desc">对话太长 → Auto Compact → 智能总结历史</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding: 10px; font-size: 22px; color: #999; font-weight: bold;">
+    下一话: Token 计数与成本 ▶
+  </div>
+</body>
+</html>

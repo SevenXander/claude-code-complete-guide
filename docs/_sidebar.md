@@ -1,0 +1,148 @@
+* [封面](/)
+
+* **前言**
+  * [关于本书](part00-preface/README.md)
+  * [学习路线图](part00-preface/roadmap.md)
+  * [术语表](part00-preface/glossary.md)
+
+* **第一篇：基础入门**
+  * [1.1 什么是 Claude Code？](part01-basics/01-what-is-claude-code.md)
+  * [1.2 编程基础：终端与命令行](part01-basics/02-programming-basics.md)
+  * [1.3 TypeScript 快速入门](part01-basics/03-typescript-basics.md)
+  * [1.4 React 与 Ink 终端 UI](part01-basics/04-react-and-ink.md)
+
+* **第二篇：架构全景**
+  * [2.1 软件架构概念](part02-architecture/01-what-is-software-architecture.md)
+  * [2.2 技术栈全解析](part02-architecture/02-tech-stack.md)
+  * [2.3 启动流程详解](part02-architecture/03-startup-process.md)
+  * [2.4 并行预取机制](part02-architecture/04-parallel-prefetch.md)
+  * [2.5 工具系统架构](part02-architecture/05-tool-system-architecture.md)
+  * [2.6 QueryEngine 查询引擎](part02-architecture/06-query-engine.md)
+  * [2.7 权限系统设计](part02-architecture/07-permission-system.md)
+  * [2.8 Agent Swarm 协作](part02-architecture/08-agent-swarm.md)
+  * [2.9 MCP 扩展系统](part02-architecture/09-mcp-extension.md)
+  * [2.10 Bridge 与全架构总结](part02-architecture/10-bridge-and-summary.md)
+
+* **第三篇：工具系统**
+  * [3.1 工具系统概览](part03-tools/01-tool-system-overview.md)
+  * [3.2 工具注册中心](part03-tools/02-tool-registry.md)
+  * [3.3 Tool 接口设计](part03-tools/03-tool-interface.md)
+  * [3.4 BashTool 深度解析](part03-tools/04-bash-tool.md)
+  * [3.5 文件操作工具](part03-tools/05-file-tools.md)
+  * [3.6 代码搜索工具](part03-tools/06-search-tools.md)
+  * [3.7 权限守门人](part03-tools/07-permissions.md)
+  * [3.8 AgentTool 子代理](part03-tools/08-agent-tool.md)
+  * [3.9 外部工具集成](part03-tools/09-external-tools.md)
+  * [3.10 实战：构建新工具](part03-tools/10-build-your-own-tool.md)
+
+* **第四篇：查询引擎**
+  * [4.1 QueryEngine 是什么](part04-queryengine/01-what-is-queryengine.md)
+  * [4.2 Agent Loop 核心循环](part04-queryengine/02-agent-loop.md)
+  * [4.3 系统提示词构建](part04-queryengine/03-system-prompt.md)
+  * [4.4 流式响应](part04-queryengine/04-streaming.md)
+  * [4.5 并行工具执行器](part04-queryengine/05-streaming-tool-executor.md)
+  * [4.6 工具执行策略](part04-queryengine/06-tool-execution.md)
+  * [4.7 重试与错误处理](part04-queryengine/07-retry-error-handling.md)
+  * [4.8 Token 计数与成本](part04-queryengine/08-token-counting.md)
+  * [4.9 Thinking 模式](part04-queryengine/09-thinking-mode.md)
+  * [4.10 协作全景](part04-queryengine/10-queryengine-ecosystem.md)
+
+* **第五篇：权限系统**
+  * [5.1 为什么需要权限控制](part05-permissions/01-why-permissions.md)
+  * [5.2 Default 模式](part05-permissions/02-default-mode.md)
+  * [5.3 Auto 模式](part05-permissions/03-auto-mode.md)
+  * [5.4 Plan 模式](part05-permissions/04-plan-mode.md)
+  * [5.5 Bypass 模式](part05-permissions/05-bypass-mode.md)
+  * [5.6 权限检查流水线](part05-permissions/06-permission-pipeline.md)
+  * [5.7 规则系统](part05-permissions/07-rule-system.md)
+  * [5.8 BashTool AST 分析](part05-permissions/08-bash-ast-analysis.md)
+  * [5.9 交互式权限](part05-permissions/09-interactive-permission.md)
+  * [5.10 安全设计原则](part05-permissions/10-security-principles.md)
+
+* **第六篇：终端 UI**
+  * [6.1 终端 UI 基础](part06-terminal-ui/01-terminal-ui-basics.md)
+  * [6.2 Ink 框架入门](part06-terminal-ui/02-ink-framework.md)
+  * [6.3 双层 App 架构](part06-terminal-ui/03-dual-app-architecture.md)
+  * [6.4 虚拟滚动优化](part06-terminal-ui/04-virtual-scroll.md)
+  * [6.5 输入框设计](part06-terminal-ui/05-text-input.md)
+  * [6.6 Vim 模式](part06-terminal-ui/06-vim-mode.md)
+  * [6.7 Spinner 动画](part06-terminal-ui/07-spinner-animation.md)
+  * [6.8 Diff 展示](part06-terminal-ui/08-diff-display.md)
+  * [6.9 键盘绑定系统](part06-terminal-ui/09-keybinding-system.md)
+  * [6.10 设计系统与主题](part06-terminal-ui/10-design-system.md)
+
+* **第七篇：状态管理**
+  * [7.1 状态管理概念](part07-state-management/01-what-is-state-management.md)
+  * [7.2 createStore 极简 Store](part07-state-management/02-create-store.md)
+  * [7.3 AppState 组织之道](part07-state-management/03-app-state.md)
+  * [7.4 副作用同步](part07-state-management/04-side-effects.md)
+  * [7.5 Memdir 记忆魔法](part07-state-management/05-memdir-memory.md)
+  * [7.6 四种记忆分类法](part07-state-management/06-memory-types.md)
+  * [7.7 History 会话历史](part07-state-management/07-history.md)
+  * [7.8 Migrations 版本迁移](part07-state-management/08-migrations.md)
+  * [7.9 持久化策略](part07-state-management/09-persistence-strategy.md)
+  * [7.10 架构全景](part07-state-management/10-architecture-overview.md)
+
+* **第八篇：服务与集成**
+  * [8.1 服务层概览](part08-services/01-services-overview.md)
+  * [8.2 API 客户端封装](part08-services/02-api-client.md)
+  * [8.3 错误分类与降级](part08-services/03-error-handling.md)
+  * [8.4 MCP 协议深入](part08-services/04-mcp-protocol.md)
+  * [8.5 MCP 传输与工具发现](part08-services/05-mcp-transport.md)
+  * [8.6 LSP 集成](part08-services/06-lsp-integration.md)
+  * [8.7 OAuth 2.0 + PKCE](part08-services/07-oauth-authentication.md)
+  * [8.8 上下文压缩](part08-services/08-context-compression.md)
+  * [8.9 特性标志与遥测](part08-services/09-feature-flags-telemetry.md)
+  * [8.10 自动记忆提取](part08-services/10-auto-memory-extraction.md)
+
+* **第九篇：Bridge 桥接**
+  * [9.1 什么是 Bridge](part09-bridge/01-what-is-bridge.md)
+  * [9.2 跨进程通信基础](part09-bridge/02-cross-process-communication.md)
+  * [9.3 bridgeMain 主循环](part09-bridge/03-bridge-main-loop.md)
+  * [9.4 消息协议设计](part09-bridge/04-message-protocol.md)
+  * [9.5 BoundedUUIDSet](part09-bridge/05-bounded-uuid-set.md)
+  * [9.6 JWT 认证](part09-bridge/06-jwt-authentication.md)
+  * [9.7 sessionRunner 会话管理](part09-bridge/07-session-runner.md)
+  * [9.8 传输层抽象](part09-bridge/08-transport-layer.md)
+  * [9.9 IDE 集成实践](part09-bridge/09-ide-integration.md)
+  * [9.10 Bridge 架构总结](part09-bridge/10-bridge-summary.md)
+
+* **第十篇：多 Agent 协作**
+  * [10.1 什么是多 Agent 系统](part10-agent-swarm/01-what-is-multi-agent.md)
+  * [10.2 AgentTool 源码解析](part10-agent-swarm/02-agent-tool-source.md)
+  * [10.3 Agent 类型详解](part10-agent-swarm/03-agent-types.md)
+  * [10.4 沙箱隔离](part10-agent-swarm/04-sandbox-isolation.md)
+  * [10.5 TeamCreateTool](part10-agent-swarm/05-team-create-tool.md)
+  * [10.6 SendMessageTool](part10-agent-swarm/06-send-message-tool.md)
+  * [10.7 消息路由模式](part10-agent-swarm/07-message-routing.md)
+  * [10.8 Coordinator 编排](part10-agent-swarm/08-coordinator-flow.md)
+  * [10.9 Swarm vs Coordinator](part10-agent-swarm/09-swarm-vs-coordinator.md)
+  * [10.10 实战设计](part10-agent-swarm/10-design-your-own.md)
+
+* **第十一篇：性能优化**
+  * [11.1 为什么性能重要](part11-performance/01-why-performance-matters.md)
+  * [11.2 并行预取](part11-performance/02-parallel-prefetch.md)
+  * [11.3 懒加载策略](part11-performance/03-lazy-loading.md)
+  * [11.4 死代码消除](part11-performance/04-dead-code-elimination.md)
+  * [11.5 条件 Require](part11-performance/05-conditional-require.md)
+  * [11.6 上下文压缩算法](part11-performance/06-context-compression.md)
+  * [11.7 Prompt 缓存优化](part11-performance/07-prompt-cache.md)
+  * [11.8 React 渲染优化](part11-performance/08-react-rendering.md)
+  * [11.9 流式处理](part11-performance/09-streaming.md)
+  * [11.10 优化检查清单](part11-performance/10-optimization-checklist.md)
+
+* **第十二篇：亮点总结**
+  * [12.1 超级工具箱](part12-highlights/01-tool-system.md)
+  * [12.2 多代理军团](part12-highlights/02-multi-agent.md)
+  * [12.3 三层安全锁](part12-highlights/03-permission-system.md)
+  * [12.4 极速启动](part12-highlights/04-performance.md)
+  * [12.5 记忆压缩术](part12-highlights/05-context-compression.md)
+  * [12.6 终端魔法屏](part12-highlights/06-terminal-ui.md)
+  * [12.7 永不遗忘](part12-highlights/07-memory-system.md)
+  * [12.8 双向传送门](part12-highlights/08-bridge-system.md)
+  * [12.9 百宝袋](part12-highlights/09-plugin-skill.md)
+  * [12.10 王者对决](part12-highlights/10-comparison.md)
+
+* **附录**
+  * [源码文件索引](appendix/source-index.md)
+  * [推荐阅读](appendix/further-reading.md)
