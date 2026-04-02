@@ -1,0 +1,47 @@
+name: Export PDF
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+
+jobs:
+  export-pdf:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install -g docsify-cli
+
+      - name: Start docsify and export PDF
+        run: |
+          docsify serve docs --port 3000 &
+          sleep 5
+          node scripts/export-pdf.js
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: pdf-${{ steps.date.outputs.date }}
+          name: "PDF 导出 ${{ steps.date.outputs.date }}"
+          body: |
+            自动导出的 PDF 版本。
+
+            包含全部 12 篇 114 节课程内容。
+          files: claude-code-complete-guide.pdf
