@@ -1,0 +1,13 @@
+{
+  "name": "claude-code-complete-guide",
+  "version": "1.0.0",
+  "description": "图解 Claude Code 完全指南 - PDF 导出工具",
+  "private": true,
+  "scripts": {
+    "export-pdf": "node scripts/export-pdf.js"
+  },
+  "dependencies": {
+    "puppeteer": "^23.0.0",
+    "pdf-lib": "^1.17.1"
+  }
+}

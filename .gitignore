@@ -1,0 +1,4 @@
+node_modules/
+temp-pdfs/
+*.pdf
+package-lock.json

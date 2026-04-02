@@ -59,14 +59,24 @@
         errorText: '复制失败',
         successText: '已复制'
       },
+      markdown: {
+        renderer: {
+          code: function(code, lang) {
+            if (lang === 'mermaid') {
+              return '<div class="mermaid">' + code + '</div>';
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
+      },
       plugins: [
         function(hook) {
-          hook.beforeEach(function(content) {
-            return content;
-          });
           hook.doneEach(function() {
             if (typeof mermaid !== 'undefined') {
-              mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+              document.querySelectorAll('.mermaid').forEach(function(el) {
+                el.removeAttribute('data-processed');
+              });
+              mermaid.run({ querySelector: '.mermaid', suppressErrors: true });
             }
           });
         }
@@ -82,6 +92,6 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>mermaid.initialize({startOnLoad: false, theme: 'default'});</script>
+  <script>mermaid.initialize({startOnLoad: false, theme: 'default', securityLevel: 'loose'});</script>
 </body>
 </html>

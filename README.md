@@ -52,9 +52,24 @@ docsify serve docs
 # 浏览器访问 http://localhost:3000
 ```
 
-## 导出 PDF
+## 下载 PDF
 
-在浏览器中打开任意页面，按 `Ctrl+P` / `Cmd+P`，选择"另存为 PDF"。
+**[点击这里下载 PDF 版本](https://github.com/bcefghj/claude-code-complete-guide/releases/latest)**
+
+也可以本地导出：
+
+```bash
+# 安装依赖
+npm install
+
+# 启动 docsify（新开终端）
+docsify serve docs
+
+# 运行导出脚本
+node scripts/export-pdf.js
+```
+
+详见 [scripts/README.md](scripts/README.md)。
 
 ## 源码来源
 
@@ -65,6 +80,13 @@ docsify serve docs
 
 本项目仅用于教育学习目的。Claude Code 源码版权归 Anthropic, PBC 所有。
 漫画由 AI 生成，仅供学习交流使用。
+
+## 致谢
+
+感谢以下贡献者的建议和代码：
+
+- [@yuwen773](https://github.com/yuwen773) — 贡献了 PDF 批量导出脚本 ([PR #2](https://github.com/bcefghj/claude-code-complete-guide/pull/2))
+- [@FnExpress](https://github.com/FnExpress) — 反馈了 Mermaid 图表渲染问题 ([Issue #1](https://github.com/bcefghj/claude-code-complete-guide/issues/1))
 
 ## License
 
