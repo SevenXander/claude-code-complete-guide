@@ -2,6 +2,8 @@
 
 > 哆啦A梦风格漫画 + 详细源码解析 | 零基础友好 | 12 篇 114 节课
 
+**[📖 在线阅读](https://bcefghj.github.io/claude-code-complete-guide)** | **[⬇️ 下载 PDF](https://github.com/bcefghj/claude-code-complete-guide/releases/download/pdf-20260402/claude-code-complete-guide.pdf)**
+
 ## 在线阅读
 
 **[点击这里在线阅读](https://bcefghj.github.io/claude-code-complete-guide)**
@@ -54,7 +56,9 @@ docsify serve docs
 
 ## 下载 PDF
 
-**[点击这里下载 PDF 版本](https://github.com/bcefghj/claude-code-complete-guide/releases/latest)**
+**[⬇️ 直接下载 PDF（最新版）](https://github.com/bcefghj/claude-code-complete-guide/releases/download/pdf-20260402/claude-code-complete-guide.pdf)**
+
+或前往 [Releases 页面](https://github.com/bcefghj/claude-code-complete-guide/releases) 查看所有历史版本。
 
 也可以本地导出：
 
