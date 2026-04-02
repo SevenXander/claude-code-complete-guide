@@ -16,6 +16,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Chinese fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk fonts-noto-cjk-extra
+          fc-cache -fv
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -33,15 +39,24 @@ jobs:
 
       - name: Get current date
         id: date
-        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+        run: echo "date=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+
+      - name: Delete old releases
+        run: |
+          gh release list --limit 100 --json tagName -q '.[].tagName' | while read tag; do
+            gh release delete "$tag" --yes --cleanup-tag || true
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: pdf-${{ steps.date.outputs.date }}
-          name: "PDF 导出 ${{ steps.date.outputs.date }}"
+          name: "图解 Claude Code 完全指南 PDF"
           body: |
-            自动导出的 PDF 版本。
+            自动导出的 PDF 版本，包含全部 12 篇 114 节课程内容。
 
-            包含全部 12 篇 114 节课程内容。
+            直接下载：点击下方 claude-code-complete-guide.pdf
           files: claude-code-complete-guide.pdf
+          make_latest: true
