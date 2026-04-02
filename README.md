@@ -4,6 +4,25 @@
 
 **[📖 在线阅读](https://bcefghj.github.io/claude-code-complete-guide)** | **[⬇️ 下载 PDF](https://github.com/bcefghj/claude-code-complete-guide/releases/latest)**
 
+---
+
+### 🚀 V2 版本已发布！
+
+本仓库为 V1 版本（12 篇 114 节）。**全新 V2 版本**已正式发布，内容大幅扩充：
+
+| 对比 | V1（本仓库） | V2（新版） |
+|------|------------|----------|
+| 篇章 | 12 篇 114 节 | **20 篇 187 节** |
+| 新增内容 | — | 提示词工程、记忆系统、隐藏功能、Hooks 生态、Token 经济学、8 个实战 Lab |
+| 图表 | ~30 个 | **100+ Mermaid 图 + 60+ 数据表格** |
+| 自测题 | 无 | **50 题三级自测** |
+| 输出格式 | 网页 + PDF | **网页 + PDF + HTML 离线包** |
+| 文档框架 | Docsify | **VitePress**（暗色模式、全文搜索、移动适配） |
+
+**👉 [点击前往 V2 版本仓库](https://github.com/bcefghj/claude-code-complete-guide_v2)** | **[V2 在线阅读](https://bcefghj.github.io/claude-code-complete-guide_v2)** | **[V2 下载 PDF](https://github.com/bcefghj/claude-code-complete-guide_v2/releases/latest)**
+
+---
+
 ## 在线阅读
 
 **[点击这里在线阅读](https://bcefghj.github.io/claude-code-complete-guide)**
@@ -72,6 +91,14 @@ node scripts/export-pdf.js
 ```
 
 详见 [scripts/README.md](scripts/README.md)。
+
+## 相关项目
+
+| 项目 | 说明 |
+|------|------|
+| [Claude Code 完全指南 V2](https://github.com/bcefghj/claude-code-complete-guide_v2) | **V2 新版**，20 篇 187 节，VitePress 构建 |
+| [Claude-Code-Source](https://github.com/bcefghj/Claude-Code-Source) | v2.1.88 完整 TypeScript 源码 |
+| [Claude-Code-Source-Analysis](https://github.com/bcefghj/Claude-Code-Source-Analysis) | 全网源码解读资料收集 |
 
 ## 源码来源
 
